@@ -153,18 +153,55 @@ const PRL=['Barbell bench press','Trap bar deadlift','Zercher squat','Belt squat
 const DAYS=['MON','TUE','WED','THU','FRI','SAT','SUN'];
 
 // ── ALL WEIGHTS HARDCODED — confirmed with Pat ──────────────
-function bench(w){const a=[130,130,135,135,145,150,150,155,155,160,160,95];return{wt:a[w-1],r:w===12?'2×5':w<=4?'4×8':w<=8?'4×6':'4×4'};}
-function trapDL(w){const p=w===12?.5:w<=4?[.70,.72,.75,.77][w-1]:w<=8?[.80,.82,.85,.87][w-5]:[.88,.90,.92,.95][w-9];return{wt:Math.round(365*p/5)*5,r:w===12?'2×5':w<=4?'4×8':w<=8?'4×6':'4×4'};}
+// ── ALL WEIGHTS — updated from actual logged data (export 2026-05-19) ──
+// Bench: stay at 130# — week 2 drop was due to core soreness from GHDs, not strength
+function bench(w){const a=[130,130,130,135,145,150,150,155,155,160,160,95];return{wt:a[w-1],r:w===12?'2×5':w<=4?'4×8':w<=8?'4×6':'4×4'};}
+
+// Trap bar DL: adjusted base — 250# felt heavy at wk1, backing off slightly
+function trapDL(w){const a=[250,255,260,265,285,295,305,315,325,335,345,185];return{wt:a[w-1],r:w===12?'2×5':w<=4?'4×8':w<=8?'4×6':'4×4'};}
+
+// Zercher: 95# felt fine — keep as is
 function zercher(w){const p=w===12?.5:w<=4?[.70,.72,.75,.77][w-1]:w<=8?[.80,.82,.85,.87][w-5]:[.88,.90,.92,.95][w-9];return{wt:Math.round(135*p/5)*5,r:w===12?'2×5':w<=4?'4×8':w<=8?'4×6':'4×4'};}
+
+// Belt squat: 135# felt fine — keep as is
 function beltSq(w){const a=[135,140,145,150,160,165,170,175,180,185,195,115];return{wt:a[w-1],r:w===12?'2×10':w<=4?'3×10':w<=8?'3×8':'3×6'};}
-function rdl(w){const a=[75,80,85,90,95,100,105,110,115,120,125,65];return{wt:a[w-1],r:w===12?'2×8':w<=4?'3×10':w<=8?'3×8':'3×6'};}
+
+// RDL: logged "could have gone heavier" — bumped up from wk2
+function rdl(w){const a=[75,90,95,100,105,110,115,120,125,130,135,70];return{wt:a[w-1],r:w===12?'2×8':w<=4?'3×10':w<=8?'3×8':'3×6'};}
+
+// Barbell row: 65# felt solid — keep progression
 function row(w){const a=[65,65,75,75,85,85,95,95,105,105,115,65];return{wt:a[w-1],r:w===12?'2×8':w<=4?'3×10':w<=8?'3×8':'3×6'};}
-function diInc(w){const a=[35,35,40,40,40,45,45,50,50,55,55,30];return{wt:a[w-1],r:w===12?'2×10':w<=4?'3×10–12':w<=8?'3×8–10':'3×6–8'};}
-function dbSh(w){const a=[20,20,25,25,25,30,30,35,35,40,40,20];return{wt:a[w-1],r:w===12?'2×10':w<=4?'3×10–12':w<=8?'3×8–10':'3×6–8'};}
-function lmine(w){const a=[25,25,30,30,30,35,35,40,40,45,45,25];return{wt:a[w-1],r:w===12?'2×10':w<=4?'3×10–12':w<=8?'3×8–10':'3×6–8'};}
+
+// DB incline: removed slingshot — dropped to 30# as true working weight
+function diInc(w){const a=[30,30,35,35,40,40,45,45,45,50,50,25];return{wt:a[w-1],r:w===12?'2×10':w<=4?'3×10–12':w<=8?'3×8–10':'3×6–8'};}
+
+// DB shoulder press: actual working weight was 15–20# — corrected base to 20#
+function dbSh(w){const a=[20,20,20,25,25,30,30,35,35,40,40,20];return{wt:a[w-1],r:w===12?'2×10':w<=4?'3×10–12':w<=8?'3×8–10':'3×6–8'};}
+
+// Landmine press: logged bar + 10# = ~55# total. Showing as added plate weight.
+function lmine(w){const a=[10,10,15,15,20,20,25,25,30,30,35,10];return{wt:a[w-1],r:w===12?'2×10':w<=4?'3×10–12':w<=8?'3×8–10':'3×6–8'};}
+function lmineLabel(w){return`bar + ${lmine(w)}# plate`;}
+
+// Lateral raises: 15# correct — keep
 function lat(w){const a=[15,15,15,15,15,15,20,20,20,20,20,15];return{wt:a[w-1],r:w===12?'2×12':w<=4?'3×12':w<=8?'3×10':'3×8'};}
+
+// DB clean & press
 function dcp(w){const a=[30,30,35,35,35,40,40,45,45,50,50,25];return{wt:a[w-1],r:w===12?'2×10':w<=4?'3×12':w<=8?'3×10':'3×8'};}
-function band(w){return w<=3?'3 bands':w<=6?'2 bands':w<=9?'1 band (light)':w<=11?'unassisted if able':'2 bands (deload)';}
+
+// Hammer curls: logged 25# not 35# — corrected
+function hcurl(w){const a=[25,25,30,30,30,35,35,40,40,45,45,25];return{wt:a[w-1],r:w===12?'2×10':w<=4?'3×10–12':w<=8?'3×8–10':'3×6–8'};}
+
+// Lat pulldown: logged 72.5# "could have done more" — bumped to 85# wk2
+function latpd(w){const a=[75,85,90,95,100,105,110,115,120,125,130,70];return w===12?70:latpd_arr[w-1];}
+const latpd_arr=[75,85,90,95,100,105,110,115,120,125,130,70];
+function latpdWt(w){return latpd_arr[w-1]||75;}
+
+// Pull-ups: actually using 4 bands — updated progression
+function band(w){return w<=4?'4 bands':w<=8?'3 bands':w<=10?'2 bands':w<=11?'1 band (light)':'3 bands (deload)';}
+
+// GHD sit-ups: wrecked core for 2 days — reducing volume in accumulation
+function ghdReps(w){return w<=4?'8':w<=8?'10':'12';}
+
 function sled(w){return w===12?'90#':w<=4?'135#':w<=8?'155#':'185#';}
 function fc(w){return w===12?'95#':w<=4?'145#':w<=8?'165#':'185#';}
 function kb(w){return w<=6?'44–53#':w<=10?'53#':'53–70#';}
@@ -183,8 +220,8 @@ function prog(w){
       {l:'Warm-up · 8 min',ex:[{n:'Jump rope',s:0,r:'3 min'},{n:'Band pull-aparts',s:0,r:'2×15'},{n:'Shoulder CARs',s:0,r:'3–5 reps each arm · slow'}]},
       {l:'Primary — bench press',ex:[{n:'Barbell bench press',s:ns(B.r),r:nr(B.r),w:`${B.wt}#`,no:'Control descent · C5 aware · no forced reps left'}]},
       {l:'Secondary — double progression · 75s rest',dp:1,ex:[
-        {n:'DB incline press',s:ns(DI.r),r:nr(DI.r),w:`${DI.wt}# each`,no:'Left side match only · no forced reps · C5-C6'},
-        {n:'Landmine press',s:ns(LM.r),r:nr(LM.r),w:`${LM.wt}# each`,no:'New movement · shoulder-friendly · C5 safe'},
+        {n:'DB incline press',s:ns(DI.r),r:nr(DI.r),w:`${DI.wt}# each`,no:'No slingshot · left side match only · no forced reps'},
+        {n:'Landmine press',s:ns(LM.r),r:nr(LM.r),w:lmineLabel(w),no:'Single arm · shoulder-friendly arc · C5 safe'},
         {n:'Seated DB shoulder press',s:ns(DS.r),r:nr(DS.r),w:`${DS.wt}# each`},
       ]},
       {l:'Accessories · 60s rest',ex:[
@@ -208,8 +245,8 @@ function prog(w){
       ]},
       {l:'Secondary pull · 60s rest',ex:[
         {n:'Barbell row',s:ns(ROW.r),r:nr(ROW.r),w:`${ROW.wt}#`,no:'Brace · pull to belly button'},
-        {n:'Lat pulldown',s:ns(ROW.r),r:nr(ROW.r),no:'Full stretch at top · squeeze at bottom'},
-        {n:'DB hammer curls',s:3,r:nr(DI.r),w:'35# each'},
+        {n:'Lat pulldown',s:ns(ROW.r),r:nr(ROW.r),w:`${latpdWt(w)}#`,no:'Full stretch at top · squeeze at bottom'},
+        {n:'DB hammer curls',s:3,r:nr(DI.r),w:`${hcurl(w).wt}# each`},
       ]},
       {l:'Conditioning · 2 rounds · 45s rest',ex:[{n:'Rowing erg sprint',s:2,r:'250 m',no:'Hard pace'}]},
       {l:'— PM: BJJ —',div:1,ex:[{n:'BJJ class',s:0,r:'60–90 min',no:'Manageable intensity — you already lifted'}]},
@@ -220,11 +257,11 @@ function prog(w){
       {l:'Secondary legs · 75s rest',ex:[
         {n:'Belt squat',s:ns(BS.r),r:nr(BS.r),w:`${BS.wt}#`,no:'Spares spine — BJJ tonight · full depth'},
         {n:'Romanian deadlift',s:ns(RDL.r),r:nr(RDL.r),w:`${RDL.wt}#`,no:'Feel hamstring stretch · don\'t round'},
-        {n:'GHD hip extensions',s:3,r:w<=4?'12':w<=8?'10':'8',no:'Hold plate to chest if possible'},
+        {n:'GHD hip extensions',s:3,r:'12',no:'Hold plate to chest if possible'},
       ]},
       {l:'Core · 60s rest',ex:[
         {n:'Landmine rotations',s:3,r:'10 each side',no:'BJJ hip power · control the rotation'},
-        {n:'GHD sit-ups',s:3,r:w<=4?'12':w<=8?'10':'8'},
+        {n:'GHD sit-ups',s:3,r:ghdReps(w),no:'Reduced volume — core recovery · full ROM'},
       ]},
       {l:'— PM: BJJ —',div:1,ex:[{n:'BJJ class',s:0,r:'60–90 min',no:'Technique focus — lift is done'}]},
     ]},
@@ -305,17 +342,21 @@ function rProg(){
   [{d:'MON',l:'Push',s:'~55 min',c:'#4ade80'},{d:'TUE',l:'BJJ',s:'Technique',c:'#818cf8'},{d:'WED',l:'OFF',s:'4am coaching',c:'#475569'},{d:'THU',l:'Pull+BJJ',s:'~50 min AM',c:'#f97316'},{d:'FRI',l:'Legs+BJJ',s:'~55 min AM',c:'#f97316'},{d:'SAT',l:'Full Body',s:'65–70 min',c:'#4ade80'},{d:'SUN',l:'REST',s:'Yardwork',c:'#475569'}].forEach(x=>{h+=`<div class="wsc"><div class="wsd">${x.d}</div><div class="wsl" style="color:${x.c};">${x.l}</div><div class="wss">${x.s}</div></div>`;});
   h+=`</div></div>`;
   const B=bench(S.week),TD=trapDL(S.week),Z=zercher(S.week),BS=beltSq(S.week),RDL=rdl(S.week),ROW=row(S.week);
-  h+=`<div class="nc"><div class="nt">CONFIRMED WEIGHTS — WEEK ${S.week}</div>
-    <div>· <strong>Bench:</strong> ${B.wt}# × ${B.r}</div>
-    <div>· <strong>Trap bar DL:</strong> ${TD.wt}# × ${TD.r} (365# 1RM)</div>
-    <div>· <strong>Zercher:</strong> ${Z.wt}# × ${Z.r} (135# base)</div>
-    <div>· <strong>Belt squat:</strong> ${BS.wt}# × ${BS.r}</div>
-    <div>· <strong>Barbell row:</strong> ${ROW.wt}# × ${ROW.r} (new movement — hardcoded)</div>
-    <div>· <strong>RDL:</strong> ${RDL.wt}# × ${RDL.r}</div>
-    <div>· <strong>Lateral raises:</strong> hardcoded 15# (not calculator)</div>
-    <div>· <strong>Pull-ups:</strong> ${band(S.week)} this week</div>
+  h+=`<div class="nc"><div class="nt">CONFIRMED WEIGHTS — WEEK ${S.week} (updated from your logs)</div>
+    <div>· <strong>Bench:</strong> ${B.wt}# × ${B.r} · stay at 130# — wk2 drop was core soreness</div>
+    <div>· <strong>Trap bar DL:</strong> ${TD.wt}# × ${TD.r} · adjusted down (250# felt heavy wk1)</div>
+    <div>· <strong>Zercher:</strong> ${Z.wt}# × ${Z.r} · felt solid, keep climbing</div>
+    <div>· <strong>Belt squat:</strong> ${BS.wt}# × ${BS.r} · felt solid</div>
+    <div>· <strong>Barbell row:</strong> ${ROW.wt}# × ${ROW.r} · new movement, building</div>
+    <div>· <strong>RDL:</strong> ${RDL.wt}# × ${RDL.r} · bumped up (logged "could have gone heavier")</div>
+    <div>· <strong>DB incline:</strong> ${diInc(S.week).wt}# · no slingshot · dropped from 35#</div>
+    <div>· <strong>DB shoulder press:</strong> ${dbSh(S.week).wt}# · corrected base (logged 20# actual)</div>
+    <div>· <strong>Landmine press:</strong> ${lmineLabel(S.week)} · single arm</div>
+    <div>· <strong>Lat pulldown:</strong> ${latpdWt(S.week)}# · bumped (72.5# "could have done more")</div>
+    <div>· <strong>Hammer curls:</strong> ${hcurl(S.week).wt}# · corrected (logged 25# not 35#)</div>
+    <div>· <strong>Pull-ups:</strong> ${band(S.week)} · updated (using 4 bands not 3)</div>
+    <div>· <strong>GHD sit-ups:</strong> 3×${ghdReps(S.week)} · reduced volume (core was wrecked 2 days)</div>
     <div>· <strong>C5-C6:</strong> Left side never forced · DB over barbell · no barbell OHP</div>
-    <div>· <strong>Deload Wk 12:</strong> 50% load, 2–3 sets. Don't skip it.</div>
   </div>`;
   const rc=Object.entries(S.data).filter(([k,v])=>v.completed).slice(-3).reverse();
   if(rc.length){h+=`<div class="sec" style="margin-top:12px;"><div class="sct">RECENT SESSIONS</div>`;rc.forEach(([k,v])=>{const mx=k.match(/w(\d+)_(\w+)/);if(!mx)return;const ph2=gp(parseInt(mx[1])).name,nt=v.notes?v.notes.slice(0,50)+(v.notes.length>50?'…':''):'No notes';h+=`<div class="rec-item"><div style="font-size:13px;font-weight:700;color:#e2e8f0;">WK ${mx[1]} · ${mx[2]} <span style="font-size:10px;color:#475569;">[${ph2}]</span></div><div style="font-size:11px;color:#475569;font-family:'Barlow',sans-serif;margin-top:1px;">${nt}</div></div>`;});h+=`</div>`;}
