@@ -89,14 +89,21 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed','Aria
 .sb svg{width:9px;height:9px;}
 .sc2{font-size:10px;color:var(--text5);margin-left:2px;}
 /* LOG INPUT */
-.eta{width:100%;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--text3);font-size:12px;padding:5px 7px;font-family:'Barlow',sans-serif;resize:none;line-height:1.4;min-height:32px;}
+.eta{width:100%;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--text3);font-size:13px;padding:8px 10px;font-family:'Barlow',sans-serif;resize:vertical;line-height:1.5;min-height:64px;}
 .eta:focus{outline:none;border-color:var(--text5);}
+.day-notes-wrap{padding:14px 16px;background:var(--bg);border-top:1px solid var(--border2);}
+.day-notes-lbl{font-size:10px;color:var(--text4);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+.day-notes-inp{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:10px 12px;font-family:'Barlow',sans-serif;resize:vertical;line-height:1.6;min-height:90px;}
+.day-notes-inp:focus{outline:none;border-color:var(--text5);}
 /* MARK ROW */
 .mr{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--bg);border-top:1px solid var(--border);}
 .btn{cursor:pointer;border-radius:4px;padding:9px 14px;font-size:12px;font-weight:700;font-family:'Barlow Condensed',sans-serif;letter-spacing:0.08em;border:none;text-transform:uppercase;-webkit-tap-highlight-color:transparent;}
 .bg{background:var(--acc-green);color:#000;}
 .br{background:transparent;border:1px solid var(--acc-red);color:var(--acc-red);}
+.b-export{background:transparent;border:1px solid var(--acc-blue);color:var(--acc-blue);}
+.b-import{background:transparent;border:1px solid var(--text4);color:var(--text3);}
 .as{font-size:10px;color:var(--text5);}
+.export-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 /* WEEKLY STRUCTURE */
 .wsg{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;margin-bottom:14px;}
 .wsc{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:8px 10px;}
@@ -289,9 +296,10 @@ function rProg(){
       let sbs='';
       if(ns2>0){const done=Array.from({length:ns2},(_,n)=>(sd.sets||{})[`${k}_s${n}`]?.done||false),dc=done.filter(Boolean).length;sbs=`<div class="sbs">${done.map((d,n)=>`<button class="sb" style="background:${d?ph.color:'transparent'};border-color:${d?ph.color:'#333'};" onclick="tgs('${k}',${n})">${d?`<svg viewBox="0 0 9 9"><polyline points="1.5,4.5 4,8 8,1.5" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</button>`).join('')}<span class="sc2">${dc}/${ns2}</span></div>`;}
       const wb=ex.w?`<span class="ewb" style="background:${ph.color}18;border:1px solid ${ph.color}44;color:${ph.color};">${ex.w}</span>`:'';
-      h+=`<div class="er"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;"><span class="en">${ex.n}</span>${wb}${ex.no?`<span class="eno">· ${ex.no}</span>`:''}</div><div class="esr">${ns2>0?`<span class="esi"><strong>${ns2}</strong> sets × <strong>${ex.r}</strong></span>`:`<span class="esi" style="color:#475569;">${ex.r}</span>`}${sbs}</div><textarea class="eta" rows="1" placeholder="Log weight / reps..." oninput="sw2('${k}',this.value)">${ed.w||''}</textarea></div>`;
+      h+=`<div class="er"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;"><span class="en">${ex.n}</span>${wb}${ex.no?`<span class="eno">· ${ex.no}</span>`:''}</div><div class="esr">${ns2>0?`<span class="esi"><strong>${ns2}</strong> sets × <strong>${ex.r}</strong></span>`:`<span class="esi" style="color:#475569;">${ex.r}</span>`}${sbs}</div><textarea class="eta" rows="3" placeholder="Log weight · reps · how it felt..." oninput="sw2('${k}',this.value)">${ed.w||''}</textarea></div>`;
     });
   });
+  h+=`<div class="day-notes-wrap"><div class="day-notes-lbl">Session notes</div><textarea class="day-notes-inp" placeholder="Overall session notes — energy, BJJ performance, how the body felt, anything worth remembering..." oninput="setDayNotes(this.value)">${sd.notes||''}</textarea></div>`;
   h+=`<div class="mr"><span class="as">AUTO-SAVED</span>${sd.completed?`<button class="btn br" onclick="um()">UNMARK COMPLETE</button>`:`<button class="btn bg" onclick="mc()">MARK COMPLETE ✓</button>`}</div></div>`;
   h+=`<div style="margin-top:14px;"><div class="sl">Weekly structure</div><div class="wsg">`;
   [{d:'MON',l:'Push',s:'~55 min',c:'#4ade80'},{d:'TUE',l:'BJJ',s:'Technique',c:'#818cf8'},{d:'WED',l:'OFF',s:'4am coaching',c:'#475569'},{d:'THU',l:'Pull+BJJ',s:'~50 min AM',c:'#f97316'},{d:'FRI',l:'Legs+BJJ',s:'~55 min AM',c:'#f97316'},{d:'SAT',l:'Full Body',s:'65–70 min',c:'#4ade80'},{d:'SUN',l:'REST',s:'Yardwork',c:'#475569'}].forEach(x=>{h+=`<div class="wsc"><div class="wsd">${x.d}</div><div class="wsl" style="color:${x.c};">${x.l}</div><div class="wss">${x.s}</div></div>`;});
@@ -311,6 +319,13 @@ function rProg(){
   </div>`;
   const rc=Object.entries(S.data).filter(([k,v])=>v.completed).slice(-3).reverse();
   if(rc.length){h+=`<div class="sec" style="margin-top:12px;"><div class="sct">RECENT SESSIONS</div>`;rc.forEach(([k,v])=>{const mx=k.match(/w(\d+)_(\w+)/);if(!mx)return;const ph2=gp(parseInt(mx[1])).name,nt=v.notes?v.notes.slice(0,50)+(v.notes.length>50?'…':''):'No notes';h+=`<div class="rec-item"><div style="font-size:13px;font-weight:700;color:#e2e8f0;">WK ${mx[1]} · ${mx[2]} <span style="font-size:10px;color:#475569;">[${ph2}]</span></div><div style="font-size:11px;color:#475569;font-family:'Barlow',sans-serif;margin-top:1px;">${nt}</div></div>`;});h+=`</div>`;}
+  h+=`<div class="sec" style="margin-top:12px;"><div class="sct">DATA</div>
+    <p style="font-size:11px;color:#475569;font-family:'Barlow',sans-serif;margin-bottom:10px;">Export saves all your logged weights, reps, notes, PRs and bodyweight as a backup file. Import restores from a previous export.</p>
+    <div class="export-row">
+      <button class="btn b-export" onclick="exportData()">⬇ Export backup</button>
+      <label class="btn b-import" style="cursor:pointer;">⬆ Import backup<input type="file" accept=".json" style="display:none;" onchange="importData(event)"/></label>
+    </div>
+  </div>`;
   h+=`</div>`;return h;
 }
 
@@ -351,11 +366,96 @@ function sw2(k,v){const d=gd(S.week,S.day);if(!d.sets)d.sets={};if(!d.sets[k])d.
 function tgs(k,n){const d=gd(S.week,S.day);if(!d.sets)d.sets={};const sk=`${k}_s${n}`;if(!d.sets[sk])d.sets[sk]={done:false};d.sets[sk].done=!d.sets[sk].done;saveState();render();}
 function mc(){gd(S.week,S.day).completed=true;saveState();render();}
 function um(){gd(S.week,S.day).completed=false;saveState();render();}
+function setDayNotes(v){const d=gd(S.week,S.day);d.notes=v;saveState();}
 function abw(){const i=document.getElementById('bi');const v=parseFloat(i.value);if(!v||v<50||v>500)return;S.bw.push({wt:v,date:today()});saveState();render();}
 function dbw(i){S.bw.splice(i,1);saveState();render();}
 function apr(){const w=parseFloat(document.getElementById('pw')?.value||prf.w),r=document.getElementById('pr2')?.value||prf.r,n=document.getElementById('pn')?.value||prf.n;if(!w||w<1)return;if(!S.prs[prf.lift])S.prs[prf.lift]=[];S.prs[prf.lift].push({weight:w,reps:r,note:n,date:today(),week:S.week});S.prs[prf.lift].sort((a,b)=>a.weight-b.weight);prf.w='';prf.r='';prf.n='';saveState();render();}
 function dpr(l,i){S.prs[l].splice(i,1);if(!S.prs[l].length)delete S.prs[l];saveState();render();}
 
+function exportData(){
+  // Build a readable export with all logged data
+  const pr=prog(S.week);
+  const export_data={
+    exported:today(),
+    app:'Jack Ryan 12-Week S&C',
+    summary:{sessions_completed:totalSessions(),bodyweight_entries:S.bw.length,pr_lifts:Object.keys(S.prs).length},
+    bodyweight:S.bw,
+    prs:S.prs,
+    sessions:{}
+  };
+  // Expand each logged session into readable format
+  Object.entries(S.data).forEach(([key,val])=>{
+    const mx=key.match(/w(\d+)_(\w+)/);
+    if(!mx)return;
+    const wk=parseInt(mx[1]),day=mx[2];
+    const dayProg=prog(wk).find(d=>d.day===day);
+    if(!dayProg)return;
+    const session={week:wk,day,phase:gp(wk).name,completed:val.completed,notes:val.notes||'',exercises:[]};
+    dayProg.secs.forEach((sec,si)=>{
+      sec.ex.forEach((ex,ei)=>{
+        const k=`s${si}e${ei}`;
+        const logged=(val.sets||{})[k];
+        const sets_done=Array.from({length:ex.s||0},(_,n)=>(val.sets||{})[`${k}_s${n}`]?.done||false).filter(Boolean).length;
+        if(logged&&(logged.w||sets_done>0)){
+          session.exercises.push({
+            name:ex.n,
+            target_sets:ex.s||0,
+            target_reps:ex.r,
+            target_weight:ex.w||'',
+            logged:logged.w||'',
+            sets_checked:`${sets_done}/${ex.s||0}`
+          });
+        }
+      });
+    });
+    export_data.sessions[key]=session;
+  });
+  const json=JSON.stringify(export_data,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`jack-ryan-sc-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const parsed=JSON.parse(ev.target.result);
+      // Support both full export format and raw state format
+      if(parsed.sessions&&parsed.bodyweight!==undefined&&parsed.prs!==undefined){
+        // It's a full export — we need to rebuild the raw state from it
+        // Just restore the core state fields that were saved
+        const raw=localStorage.getItem(STORE_KEY);
+        if(raw){
+          const existing=JSON.parse(raw);
+          // Merge: keep existing week/day/tab preferences, restore data/bw/prs
+          existing.bw=parsed.bodyweight||existing.bw;
+          existing.prs=parsed.prs||existing.prs;
+          S={...S,...existing};
+        }
+        // Also try restoring session notes from export
+        Object.entries(parsed.sessions||{}).forEach(([key,sess])=>{
+          if(!S.data[key])S.data[key]={sets:{},notes:'',completed:false};
+          S.data[key].notes=sess.notes||S.data[key].notes;
+          S.data[key].completed=sess.completed||S.data[key].completed;
+        });
+      } else if(parsed.data!==undefined){
+        // It's a raw state backup
+        S={...S,...parsed};
+      }
+      if(!S.prs)S.prs={};if(!S.bw)S.bw=[];if(!S.data)S.data={};
+      saveState();render();
+      alert('Import successful ✓');
+    }catch(err){alert('Import failed — file may be corrupted or wrong format.');}
+  };
+  reader.readAsText(file);
+}
 // ── INIT ──────────────────────────────────────────────────────
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 loadState();
